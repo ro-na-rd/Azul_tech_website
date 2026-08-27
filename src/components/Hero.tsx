@@ -319,14 +319,34 @@ export default function Hero() {
                   )}
                 </motion.div>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.65, delay: 0.35, ease: "easeOut" }}
-                  className="text-sm text-white/60 max-w-xl leading-relaxed"
-                >
-                  {heroData?.subtitle || ""}
-                </motion.p>
+                <div className="flex items-center gap-6">
+                  <motion.p
+                    initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.65, delay: 0.35, ease: "easeOut" }}
+                    className="text-sm text-white/60 max-w-xl leading-relaxed"
+                  >
+                    {heroData?.subtitle || ""}
+                  </motion.p>
+
+                  {/* McKinsey Circular Arrow Button ( → ) */}
+                  <motion.button
+                    onClick={() => {
+                      const el = document.getElementById('media-block-player') || document.getElementById('layers') || document.getElementById('work') || document.getElementById('bento-card-implementation');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth' });
+                      } else {
+                        window.location.href = '/work';
+                      }
+                    }}
+                    whileHover={{ scale: 1.1, backgroundColor: "#0ECFFE", color: "#040D14" }}
+                    whileTap={{ scale: 0.92 }}
+                    className="w-14 h-14 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center shrink-0 shadow-2xl transition-all cursor-pointer group"
+                    aria-label="Navigate to video & work"
+                  >
+                    <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
+                  </motion.button>
+                </div>
               </div>
             </div>
 
