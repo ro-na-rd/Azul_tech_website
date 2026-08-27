@@ -1,4 +1,5 @@
 import React, { useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import {
   motion,
@@ -284,6 +285,7 @@ function HeroSkeleton() {
 
 export default function Hero() {
   const { data: heroData, loading } = useHero();
+  const navigate = useNavigate();
 
   if (loading) return <HeroSkeleton />;
 
@@ -331,14 +333,7 @@ export default function Hero() {
 
                   {/* McKinsey Circular Arrow Button ( → ) */}
                   <motion.button
-                    onClick={() => {
-                      const el = document.getElementById('mckinsey-feature-section') || document.getElementById('media-block-player') || document.getElementById('layers');
-                      if (el) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      } else {
-                        window.location.href = '/move';
-                      }
-                    }}
+                    onClick={() => navigate('/move')}
                     whileHover={{ scale: 1.1, backgroundColor: "#0ECFFE", color: "#040D14" }}
                     whileTap={{ scale: 0.92 }}
                     className="w-14 h-14 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center shrink-0 shadow-2xl transition-all cursor-pointer group"

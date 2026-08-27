@@ -11,7 +11,6 @@ import CareersCTA from './components/CareersCTA';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SovereignSection from './components/SovereignSection';
-import SovereignMoveHero from './components/SovereignMoveHero';
 
 import LeadershipPage from './pages/LeadershipPage';
 import MissionValuesPage from './pages/MissionValuesPage';
@@ -49,7 +48,6 @@ function HomePage() {
       <CustomCursor />
       <Header />
       <main id="main-content">
-        <SovereignMoveHero />
         <Hero />
         <MediaBlock />
         <HowWeHelp />
