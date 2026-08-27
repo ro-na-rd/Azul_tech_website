@@ -4,24 +4,38 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSanityData } from "../contexts/SanityDataContext";
 import { PortableText } from "@portabletext/react";
 import { optimizedUrl } from "../services/sanity";
-import DpiMotionGraphic from "./DpiMotionGraphic";
-import GlobalSouthMotionGraphic from "./GlobalSouthMotionGraphic";
+import { formatRuntime } from "./MotionGraphicPlayer";
+import DpiMotionGraphic, { RUNTIME_MS as DPI_MS } from "./DpiMotionGraphic";
+import GlobalSouthMotionGraphic, { RUNTIME_MS as GLOBAL_SOUTH_MS } from "./GlobalSouthMotionGraphic";
+import EgovMotionGraphic, { RUNTIME_MS as EGOV_MS } from "./EgovMotionGraphic";
+
+type MgEntry = { Component: React.FC<{ autoPlay?: boolean }>; runtimeMs: number };
 
 // Some briefings are rendered as in-app, code-drawn motion graphics rather than
 // an external clip or a CMS-uploaded video. A briefing opts in explicitly with
-// `motionGraphic: "<key>"`, or is matched by title as a fallback.
-const MOTION_GRAPHICS: Record<string, React.FC<{ autoPlay?: boolean }>> = {
-  dpi: DpiMotionGraphic,
-  "global-south": GlobalSouthMotionGraphic,
+// `motionGraphic: "<key>"`, or is matched by title as a fallback. Each carries
+// its real runtime so the "Watch · M:SS" label is exact.
+const MOTION_GRAPHICS: Record<string, MgEntry> = {
+  dpi: { Component: DpiMotionGraphic, runtimeMs: DPI_MS },
+  "global-south": { Component: GlobalSouthMotionGraphic, runtimeMs: GLOBAL_SOUTH_MS },
+  egov: { Component: EgovMotionGraphic, runtimeMs: EGOV_MS },
 };
 
-const motionGraphicFor = (item: any): React.FC<{ autoPlay?: boolean }> | null => {
+const motionGraphicFor = (item: any): MgEntry | null => {
   const key = item?.motionGraphic;
   if (key && MOTION_GRAPHICS[key]) return MOTION_GRAPHICS[key];
   const title = (item?.title || "").toLowerCase();
-  if (/digital public infrastructure/.test(title)) return DpiMotionGraphic;
-  if (/kigali.*(world|global)/.test(title)) return GlobalSouthMotionGraphic;
+  if (/digital public infrastructure/.test(title)) return MOTION_GRAPHICS.dpi;
+  if (/kigali.*(world|global)/.test(title)) return MOTION_GRAPHICS["global-south"];
+  if (/e-?gov(ernment)?|civil service/.test(title)) return MOTION_GRAPHICS.egov;
   return null;
+};
+
+/** The exact "Watch" duration label for a briefing. */
+const durationLabel = (item: any): string => {
+  const mg = motionGraphicFor(item);
+  if (mg) return formatRuntime(mg.runtimeMs);
+  return item?.duration ? `${item.duration} min` : "";
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -117,7 +131,7 @@ function PlaylistCard({
           isActive ? "text-sky-400" : "text-white/40"
         }`}
       >
-        {item.duration || "Episode"} min
+        {durationLabel(item) || "Episode"}
       </div>
       <h5
         className={`relative z-10 text-sm font-bold leading-snug transition-colors duration-200 ${
@@ -179,7 +193,8 @@ export default function MediaBlock() {
   if (discussions.length === 0) return null;
 
   const current = discussions[activeIndex];
-  const MotionGraphic = motionGraphicFor(current);
+  const motionGraphic = motionGraphicFor(current);
+  const MotionGraphic = motionGraphic?.Component ?? null;
 
   const handleSelect = (index: number) => {
     setActiveIndex(index);
@@ -277,7 +292,7 @@ export default function MediaBlock() {
                     />
                   </motion.div>
                   <span className="text-[10px] font-technical font-bold uppercase tracking-widest text-sky-400 group-hover/play:text-sky-200 transition-colors">
-                    Watch · {current.duration || "15"} min
+                    Watch · {durationLabel(current) || "—"}
                   </span>
                 </motion.button>
               </motion.div>
@@ -285,7 +300,11 @@ export default function MediaBlock() {
           </div>
 
           {/* Video pane */}
-          <div className="flex-1 min-h-[320px] lg:min-h-[460px] relative bg-black overflow-hidden">
+          <div
+            className={`flex-1 relative bg-black overflow-hidden ${
+              MotionGraphic ? "min-h-[460px] lg:min-h-[560px]" : "min-h-[320px] lg:min-h-[460px]"
+            }`}
+          >
             {!isPlaying ? (
               <div
                 onClick={() => setIsPlaying(true)}

@@ -1,16 +1,23 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Check, ArrowDown } from "lucide-react";
 import Logo from "./Logo";
-import MotionGraphicPlayer, { MgScene, SceneShell, ease } from "./MotionGraphicPlayer";
+import MotionGraphicPlayer, {
+  MgScene,
+  SceneShell,
+  ease,
+  totalDuration,
+} from "./MotionGraphicPlayer";
 
 /**
  * DpiMotionGraphic
  * ----------------
- * A code-drawn explainer "video" about Azul Tech's Digital Public Infrastructure
- * work in Rwanda — no video file, no external embed. Rendered in the MediaBlock
- * "Digital Public Infrastructure" briefing instead of an external clip.
+ * Code-drawn explainer for Azul Tech's Digital Public Infrastructure work in
+ * Rwanda. Deliberately styled as an engineering *blueprint* — left-aligned,
+ * monospaced annotations, construction lines, cyan on a drafting grid — so it
+ * does not read like the other motion graphics on the site.
  */
+
+const A = "var(--mg-accent)"; // cyan, set by the player
 
 // Stylised Rwanda silhouette (viewBox 0 0 100 100). Kigali ≈ (50, 50).
 const RWANDA_PATH =
@@ -19,53 +26,69 @@ const RWANDA_PATH =
   "L50,13 C42,13 32,15 26,20 Z";
 
 const RAILS = ["Identity", "Payments", "Data Exchange"];
-
 const DEPLOYMENTS = [
-  "National civil records digitisation",
-  "MINAGRI knowledge hub · TUNGA AI voicebot",
-  "6-nation cross-border road-safety data network",
+  ["01", "National civil records digitisation"],
+  ["02", "MINAGRI knowledge hub · TUNGA AI voicebot"],
+  ["03", "6-nation cross-border road-safety data network"],
 ];
-
 const STACK = [
-  { label: "Citizens & Businesses", note: "One login, every service" },
-  { label: "e-Government Services", note: "Permits, health, tax, records" },
-  { label: "DPI Rails — Identity · Payments · Data", note: "Shared, reusable, open" },
-  { label: "Sovereign Cloud & Security", note: "Hosted and governed in Rwanda" },
+  "Citizens & Businesses",
+  "e-Government Services",
+  "DPI Rails — Identity · Payments · Data",
+  "Sovereign Cloud & Security",
+];
+const OUTCOMES = [
+  ["Faster", "days, not months"],
+  ["Cheaper", "shared, not siloed"],
+  ["Auditable", "every transaction traced"],
+  ["Interoperable", "ministries + borders"],
 ];
 
-const OUTCOMES = [
-  { k: "Faster", v: "Services in days, not months" },
-  { k: "Cheaper", v: "Shared rails, not siloed builds" },
-  { k: "Auditable", v: "Every transaction traceable" },
-  { k: "Interoperable", v: "Ministries and borders connected" },
-];
+// ─── Blueprint chrome ─────────────────────────────────────────────────────────
+
+function Fig({ n, title }: { n: string; title: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -12 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, ease }}
+      className="mb-5 flex items-center gap-3"
+    >
+      <span
+        className="font-mono text-[10px] font-bold uppercase tracking-[0.25em]"
+        style={{ color: A }}
+      >
+        Fig. {n}
+      </span>
+      <span className="h-px w-10" style={{ backgroundColor: A, opacity: 0.5 }} />
+      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/50">
+        {title}
+      </span>
+    </motion.div>
+  );
+}
 
 // ─── Scenes ───────────────────────────────────────────────────────────────────
 
 function TitleScene() {
   return (
-    <SceneShell>
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="mb-4 font-technical text-[10px] font-bold uppercase tracking-[0.4em] text-brand-blue"
-      >
-        What Azul Tech builds in Rwanda
-      </motion.p>
+    <SceneShell align="left">
+      <Fig n="00" title="Overview" />
       <motion.h2
-        initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ delay: 0.2, duration: 0.7, ease }}
-        className="font-serif text-4xl font-bold text-white md:text-6xl"
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.6, ease }}
+        className="font-serif text-3xl font-bold leading-[1.05] text-white md:text-5xl"
       >
-        Digital Public <span className="italic font-normal text-brand-blue">Infrastructure</span>
+        Digital Public
+        <br />
+        <span style={{ color: A }}>Infrastructure</span>
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.7, duration: 0.6 }}
-        className="mt-5 max-w-md font-serif text-sm text-white/60 md:text-base"
+        transition={{ delay: 0.6, duration: 0.6 }}
+        className="mt-4 max-w-sm font-mono text-xs leading-relaxed text-white/55"
       >
         The shared digital rails a nation runs on — the way roads and power grids
         underpin the physical economy.
@@ -76,289 +99,340 @@ function TitleScene() {
 
 function RailsScene() {
   return (
-    <SceneShell>
-      <div className="flex w-full max-w-md flex-col items-center">
-        {/* Services riding on top */}
-        <div className="mb-3 flex gap-2">
-          {["Health", "Tax", "Permits", "Records"].map((s, i) => (
-            <motion.span
-              key={s}
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1 + i * 0.1, duration: 0.4 }}
-              className="border border-white/15 bg-white/[0.04] px-2 py-1 font-technical text-[9px] uppercase tracking-widest text-white/60"
-            >
-              {s}
-            </motion.span>
-          ))}
-        </div>
-
-        {/* Pillars */}
-        <div className="flex h-[130px] items-end gap-3">
-          {RAILS.map((rail, i) => (
+    <SceneShell align="left">
+      <Fig n="01" title="Core rails — elevation" />
+      <div className="flex items-end gap-4">
+        {RAILS.map((rail, i) => (
+          <div key={rail} className="flex flex-col items-center">
             <motion.div
-              key={rail}
               initial={{ scaleY: 0 }}
               animate={{ scaleY: 1 }}
-              transition={{ delay: 0.3 + i * 0.18, duration: 0.6, ease }}
-              style={{ transformOrigin: "bottom", backgroundColor: `rgba(14,207,254,${0.14 + i * 0.05})` }}
-              className="flex w-[92px] items-end justify-center border-x border-t border-brand-blue/40 pb-2"
+              transition={{ delay: 0.2 + i * 0.16, duration: 0.55, ease }}
+              style={{ transformOrigin: "bottom", borderColor: A }}
+              className="h-[110px] w-[84px] border-x border-t border-dashed"
             >
-              <span className="font-serif text-[11px] font-bold text-white">{rail}</span>
+              <div
+                className="h-full w-full"
+                style={{ backgroundColor: `rgba(var(--mg-accent-rgb),${0.1 + i * 0.06})` }}
+              />
             </motion.div>
-          ))}
-        </div>
-
-        {/* Foundation */}
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0.3 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.6, ease }}
-          className="mt-1 flex w-full items-center justify-center border border-brand-blue bg-brand-blue/15 py-2 font-technical text-[10px] font-bold uppercase tracking-[0.3em] text-brand-blue"
-        >
-          Digital Public Infrastructure
-        </motion.div>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 + i * 0.16, duration: 0.4 }}
+              className="mt-2 font-mono text-[10px] uppercase tracking-widest text-white/70"
+            >
+              {rail}
+            </motion.span>
+          </div>
+        ))}
       </div>
-      <motion.h3
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
-        className="mt-6 font-serif text-xl font-bold text-white md:text-2xl"
+      <motion.div
+        initial={{ opacity: 0, scaleX: 0.2 }}
+        animate={{ opacity: 1, scaleX: 1 }}
+        transition={{ delay: 0.7, duration: 0.5, ease }}
+        style={{ transformOrigin: "left", borderColor: A }}
+        className="mt-2 w-[300px] border py-1.5 text-center font-mono text-[9px] font-bold uppercase tracking-[0.3em]"
       >
-        Three rails. Every public service rides on them.
-      </motion.h3>
+        <span style={{ color: A }}>Digital Public Infrastructure</span>
+      </motion.div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        className="mt-5 font-serif text-lg font-bold text-white md:text-xl"
+      >
+        Three rails. Every public service builds on them.
+      </motion.p>
     </SceneShell>
   );
 }
 
 function SovereignScene() {
-  const packets = useMemo(
-    () => [
-      { x: [40, 58, 46], y: [40, 52, 62] },
-      { x: [60, 44, 56], y: [58, 44, 66] },
-      { x: [50, 62, 42], y: [66, 54, 44] },
-    ],
-    [],
-  );
-
   return (
-    <SceneShell>
-      <div className="relative mb-6 h-[48%] max-h-[230px]">
-        <svg viewBox="0 0 100 100" className="h-full w-auto overflow-visible">
+    <SceneShell align="left">
+      <Fig n="02" title="Data residency — site plan" />
+      <div className="flex items-center gap-8">
+        <svg viewBox="0 0 100 100" className="h-[150px] w-auto shrink-0 overflow-visible">
+          <defs>
+            <pattern id="dpi-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="5" stroke={A} strokeWidth="0.5" opacity="0.4" />
+            </pattern>
+          </defs>
           <motion.path
             d={RWANDA_PATH}
-            fill="rgba(14,207,254,0.07)"
-            stroke="#0ECFFE"
+            fill="url(#dpi-hatch)"
+            stroke={A}
             strokeWidth={1.4}
             strokeLinejoin="round"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1.6, ease }}
           />
-          {packets.map((p, i) => (
-            <motion.circle
-              key={i}
-              r={2}
-              fill="#0ECFFE"
-              cx={p.x[0]}
-              cy={p.y[0]}
-              initial={{ opacity: 0 }}
-              animate={{ cx: p.x, cy: p.y, opacity: [0, 1, 1, 1] }}
-              transition={{ delay: 1.4 + i * 0.2, duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            />
-          ))}
           <motion.circle
             cx={50}
             cy={50}
-            r={9}
-            fill="#040D14"
-            stroke="#0ECFFE"
-            strokeWidth={1.4}
+            r={2.6}
+            fill={A}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 1.2, duration: 0.4 }}
+            transition={{ delay: 1.3, duration: 0.4 }}
           />
           <motion.text
-            x={50}
-            y={53}
-            textAnchor="middle"
-            fill="#0ECFFE"
-            style={{ fontSize: 7 }}
+            x={54}
+            y={51}
+            fill={A}
+            style={{ fontSize: 6, fontFamily: "monospace" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5 }}
           >
-            RW
+            KGL
           </motion.text>
         </svg>
+        <motion.ul
+          initial="hide"
+          animate="show"
+          variants={{ show: { transition: { staggerChildren: 0.18, delayChildren: 0.4 } } }}
+          className="space-y-2 font-mono text-[11px] text-white/70"
+        >
+          {["Hosted in-country", "Encrypted at rest + in transit", "Governed under national law"].map((t) => (
+            <motion.li
+              key={t}
+              variants={{ hide: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0 } }}
+              className="flex items-center gap-2"
+            >
+              <span style={{ color: A }}>—</span>
+              {t}
+            </motion.li>
+          ))}
+        </motion.ul>
       </div>
-      <motion.h3
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.6 }}
-        className="max-w-xl font-serif text-2xl font-bold text-white md:text-3xl"
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.1, duration: 0.5 }}
+        className="mt-5 font-serif text-lg font-bold text-white md:text-xl"
       >
-        Rwanda's data — hosted, encrypted and governed inside Rwanda.
-      </motion.h3>
+        Rwanda's data stays in Rwanda.
+      </motion.p>
     </SceneShell>
   );
 }
 
 function DeploymentsScene() {
   return (
-    <SceneShell>
-      <motion.h3
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="mb-8 font-serif text-2xl font-bold text-white md:text-3xl"
-      >
-        Live systems, not slideware.
-      </motion.h3>
-      <div className="flex w-full max-w-lg flex-col gap-3">
-        {DEPLOYMENTS.map((line, i) => (
+    <SceneShell align="left">
+      <Fig n="03" title="In production" />
+      <div className="flex flex-col gap-0 border-l border-dashed" style={{ borderColor: A }}>
+        {DEPLOYMENTS.map(([n, line], i) => (
           <motion.div
-            key={line}
-            initial={{ opacity: 0, x: -16 }}
+            key={n}
+            initial={{ opacity: 0, x: -14 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 + i * 0.35, duration: 0.55, ease }}
-            className="flex items-center gap-3 border border-white/10 bg-white/[0.03] px-4 py-3 text-left"
+            transition={{ delay: 0.25 + i * 0.3, duration: 0.5, ease }}
+            className="flex items-baseline gap-4 py-3 pl-5"
           >
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-blue/15 text-brand-blue">
-              <Check size={14} />
+            <span className="font-mono text-sm font-bold" style={{ color: A }}>
+              {n}
             </span>
             <span className="font-serif text-sm text-white/90 md:text-base">{line}</span>
           </motion.div>
         ))}
       </div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.5 }}
+        className="mt-5 font-serif text-lg font-bold text-white md:text-xl"
+      >
+        Live national systems, not slideware.
+      </motion.p>
     </SceneShell>
   );
 }
 
 function StackScene() {
   return (
-    <SceneShell>
-      <div className="flex w-full max-w-md flex-col items-center gap-1.5">
-        {STACK.map((row, i) => (
-          <React.Fragment key={row.label}>
+    <SceneShell align="left">
+      <Fig n="04" title="Stack — section view" />
+      <div className="flex items-stretch gap-3">
+        <div className="flex flex-col gap-1.5">
+          {STACK.map((row, i) => (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.28, duration: 0.45, ease }}
-              className={`w-full px-4 py-2.5 text-center ${
-                i === 2
-                  ? "border border-brand-blue bg-brand-blue/15"
-                  : "border border-white/12 bg-white/[0.04]"
-              }`}
+              key={row}
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 + i * 0.22, duration: 0.45, ease }}
+              className="w-[320px] px-4 py-2.5 font-mono text-[12px]"
+              style={{
+                border: `1px ${i === 2 ? "solid" : "dashed"} ${i === 2 ? A : "rgba(255,255,255,0.18)"}`,
+                backgroundColor: i === 2 ? `rgba(var(--mg-accent-rgb),0.12)` : "rgba(255,255,255,0.03)",
+                color: i === 2 ? "#fff" : "rgba(255,255,255,0.7)",
+              }}
             >
-              <div className="font-serif text-[13px] font-bold text-white">{row.label}</div>
-              <div className="font-technical text-[9px] uppercase tracking-widest text-white/45">
-                {row.note}
-              </div>
+              {row}
             </motion.div>
-            {i < STACK.length - 1 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.35 + i * 0.28, duration: 0.3 }}
-                className="text-brand-blue/60"
-              >
-                <ArrowDown size={13} />
-              </motion.div>
-            )}
-          </React.Fragment>
-        ))}
+          ))}
+        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.5 }}
+          className="flex flex-col justify-center"
+        >
+          <div className="h-full w-3 border-y border-r" style={{ borderColor: A }} />
+        </motion.div>
+        <motion.span
+          initial={{ opacity: 0, x: -6 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.2, duration: 0.5 }}
+          className="self-center font-mono text-[10px] uppercase tracking-widest"
+          style={{ color: A }}
+        >
+          citizen → ministry
+        </motion.span>
       </div>
-      <motion.h3
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.3, duration: 0.6 }}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.3, duration: 0.5 }}
         className="mt-5 font-serif text-lg font-bold text-white md:text-xl"
       >
-        One stack, from citizen to ministry.
-      </motion.h3>
+        One stack, end to end.
+      </motion.p>
     </SceneShell>
   );
 }
 
 function OutcomesScene() {
   return (
-    <SceneShell>
-      <motion.h3
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="mb-7 font-serif text-2xl font-bold text-white md:text-3xl"
-      >
-        What a nation gains by owning its rails.
-      </motion.h3>
-      <div className="grid w-full max-w-md grid-cols-2 gap-3">
-        {OUTCOMES.map((o, i) => (
+    <SceneShell align="left">
+      <Fig n="05" title="Result — schedule" />
+      <div className="grid grid-cols-2 gap-px" style={{ backgroundColor: "rgba(255,255,255,0.12)" }}>
+        {OUTCOMES.map(([k, v], i) => (
           <motion.div
-            key={o.k}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 + i * 0.15, duration: 0.45, ease }}
-            className="border border-white/10 bg-white/[0.03] p-4 text-left"
+            key={k}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 + i * 0.14, duration: 0.4 }}
+            className="bg-[#040D14] px-5 py-4"
           >
-            <div className="font-serif text-lg font-bold text-brand-blue">{o.k}</div>
-            <div className="mt-1 font-technical text-[10px] uppercase tracking-wide text-white/55">
-              {o.v}
+            <div className="font-serif text-lg font-bold" style={{ color: A }}>
+              {k}
             </div>
+            <div className="mt-1 font-mono text-[10px] uppercase tracking-wide text-white/55">{v}</div>
           </motion.div>
         ))}
       </div>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        className="mt-5 font-serif text-lg font-bold text-white md:text-xl"
+      >
+        What a nation gains by owning its rails.
+      </motion.p>
     </SceneShell>
   );
 }
 
 function OutroScene() {
   return (
-    <SceneShell>
+    <SceneShell align="left">
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease }}
-        className="flex flex-col items-center"
       >
-        <Logo className="mb-6 h-8 w-auto text-white" />
-        <h2 className="mb-4 max-w-2xl font-serif text-2xl font-bold text-white md:text-4xl">
-          Digital Public Infrastructure,{" "}
-          <span className="italic font-normal text-brand-blue">engineered in Kigali.</span>
+        <Logo className="mb-5 h-7 w-auto text-white" />
+        <h2 className="max-w-xl font-serif text-2xl font-bold leading-tight text-white md:text-4xl">
+          Digital Public Infrastructure,
+          <br />
+          <span style={{ color: A }}>engineered in Kigali.</span>
         </h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="font-technical text-[11px] font-bold uppercase tracking-[0.4em] text-white/50"
-        >
+        <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.4em] text-white/50">
           azultech.rw
-        </motion.p>
+        </p>
       </motion.div>
     </SceneShell>
   );
 }
 
 const SCENES: MgScene[] = [
-  { id: "title", label: "Digital Public Infrastructure", duration: 5200, render: () => <TitleScene /> },
-  { id: "rails", label: "Three rails, every service", duration: 6000, render: () => <RailsScene /> },
-  { id: "sovereign", label: "Hosted and governed in Rwanda", duration: 5400, render: () => <SovereignScene /> },
-  { id: "deployments", label: "Live systems, not slideware", duration: 5800, render: () => <DeploymentsScene /> },
-  { id: "stack", label: "From citizen to ministry", duration: 6000, render: () => <StackScene /> },
-  { id: "outcomes", label: "Owning the rails", duration: 5600, render: () => <OutcomesScene /> },
-  { id: "outro", label: "Engineered in Kigali", duration: 5000, render: () => <OutroScene /> },
+  {
+    id: "title",
+    label: "Fig. 00 — Digital Public Infrastructure",
+    duration: 9500,
+    narration:
+      "Digital public infrastructure is the shared digital foundation a country runs on — like its roads or power grid.",
+    render: () => <TitleScene />,
+  },
+  {
+    id: "rails",
+    label: "Fig. 01 — Three core rails",
+    duration: 10000,
+    narration:
+      "Azul Tech builds three core rails: identity, payments, and data exchange. Every public service is built on top of them.",
+    render: () => <RailsScene />,
+  },
+  {
+    id: "sovereign",
+    label: "Fig. 02 — Data stays in Rwanda",
+    duration: 7500,
+    narration:
+      "For Rwanda, that infrastructure is hosted, encrypted, and governed entirely inside the country.",
+    render: () => <SovereignScene />,
+  },
+  {
+    id: "deployments",
+    label: "Fig. 03 — Live national systems",
+    duration: 9500,
+    narration:
+      "These are live national systems — from civil records digitisation to a cross-border road-safety network spanning six countries.",
+    render: () => <DeploymentsScene />,
+  },
+  {
+    id: "stack",
+    label: "Fig. 04 — One stack, end to end",
+    duration: 8500,
+    narration:
+      "One coherent stack connects the citizen to the ministry, with security built in at the foundation.",
+    render: () => <StackScene />,
+  },
+  {
+    id: "outcomes",
+    label: "Fig. 05 — What a nation gains",
+    duration: 10000,
+    narration:
+      "When a nation owns its rails, services get faster and cheaper, every transaction is auditable, and systems finally connect.",
+    render: () => <OutcomesScene />,
+  },
+  {
+    id: "outro",
+    label: "Engineered in Kigali",
+    duration: 6000,
+    narration: "Digital public infrastructure, engineered in Kigali by Azul Tech.",
+    render: () => <OutroScene />,
+  },
 ];
 
-interface DpiMotionGraphicProps {
+export const RUNTIME_MS = totalDuration(SCENES);
+
+interface Props {
   autoPlay?: boolean;
 }
 
-export default function DpiMotionGraphic({ autoPlay = true }: DpiMotionGraphicProps) {
+export default function DpiMotionGraphic({ autoPlay = true }: Props) {
   return (
     <MotionGraphicPlayer
       scenes={SCENES}
       watermark="Azul Tech · DPI Rwanda"
       autoPlay={autoPlay}
+      accent="#0ECFFE"
+      accentRgb="14,207,254"
+      pattern="grid"
+      cornerTicks
     />
   );
 }

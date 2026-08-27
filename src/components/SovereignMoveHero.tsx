@@ -3,7 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, Search, Menu, X, ArrowRight, ShieldCheck, CheckCircle2, ChevronRight, Sparkles, Layers } from 'lucide-react';
 import Logo from './Logo';
 import SubscriptionModal from './SubscriptionModal';
-import IntroMotionGraphic from './IntroMotionGraphic';
+import IntroMotionGraphic, { RUNTIME_MS as INTRO_MS } from './IntroMotionGraphic';
+import { formatRuntime } from './MotionGraphicPlayer';
+import officeLounge from '../assets/azul_office_lounge.png';
+import ceoInterview from '../assets/azul_ceo_interview_1776857294654.png';
 
 interface SovereignMoveHeroProps {
   onOpenDrawer?: () => void;
@@ -18,6 +21,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
   const [activePhase, setActivePhase] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
+  const videoSectionRef = useRef<HTMLDivElement>(null);
 
   const toggleVideo = () => {
     if (videoRef.current) {
@@ -28,6 +32,14 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
         videoRef.current.pause();
         setIsVideoPaused(true);
       }
+    }
+  };
+
+  const handleArrowClick = () => {
+    if (videoSectionRef.current) {
+      videoSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      setWatchModalOpen(true);
     }
   };
 
@@ -170,16 +182,29 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
               <span className="italic font-normal text-gradient-brand">sovereign move?</span>
             </h1>
 
-            {/* White Pill Button: Watch Video ▶ */}
-            <motion.button
-              onClick={() => setWatchModalOpen(true)}
-              whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#040D14" }}
-              whileTap={{ scale: 0.96 }}
-              className="bg-white text-brand-midnight font-technical text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-2xl flex items-center gap-3 mx-auto transition-colors cursor-pointer"
-            >
-              <span>Watch Video</span>
-              <Play size={14} className="fill-current text-brand-midnight" />
-            </motion.button>
+            {/* Watch Video & Circular Arrow Button Row */}
+            <div className="flex items-center justify-center gap-4">
+              <motion.button
+                onClick={() => setWatchModalOpen(true)}
+                whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#040D14" }}
+                whileTap={{ scale: 0.96 }}
+                className="bg-white text-brand-midnight font-technical text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-2xl flex items-center gap-3 transition-colors cursor-pointer"
+              >
+                <span>Watch Video · {formatRuntime(INTRO_MS)}</span>
+                <Play size={14} className="fill-current text-brand-midnight" />
+              </motion.button>
+
+              {/* McKinsey Circular Arrow Button ( → ) */}
+              <motion.button
+                onClick={handleArrowClick}
+                whileHover={{ scale: 1.1, backgroundColor: "#0ECFFE", color: "#040D14" }}
+                whileTap={{ scale: 0.92 }}
+                className="w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center shrink-0 shadow-2xl transition-all cursor-pointer group"
+                aria-label="Scroll down to sovereign deployments & video"
+              >
+                <ArrowRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
+              </motion.button>
+            </div>
           </motion.div>
         </div>
 
@@ -198,6 +223,137 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
           </button>
         </div>
       </section>
+
+      {/* ── MCKINSEY FEATURE SHOWCASE SECTION (media_1787835629299.png) ────────── */}
+      <section ref={videoSectionRef} className="py-24 bg-[#040D14] border-t border-white/10 relative">
+        <div className="container-editorial">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Left 7 Columns: Title, Subtitle, Circular Arrow Button ( → ), Video Cards */}
+            <div className="lg:col-span-7 space-y-10">
+              <div>
+                <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
+                  What's your next <br />
+                  <span className="italic font-normal text-gradient-brand">sovereign move?</span>
+                </h2>
+
+                <div className="flex items-center gap-6">
+                  <p className="text-white/70 text-base md:text-lg max-w-xl font-serif leading-relaxed">
+                    Game-changing work. Sovereign systems and AI powering growth. At Azul Tech, we help you think bigger, build stronger, and expand opportunity for all.
+                  </p>
+
+                  {/* McKinsey Circular Arrow Button ( → ) */}
+                  <motion.button
+                    onClick={() => setWatchModalOpen(true)}
+                    whileHover={{ scale: 1.1, backgroundColor: "#0ECFFE", color: "#040D14" }}
+                    whileTap={{ scale: 0.92 }}
+                    className="w-16 h-16 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center shrink-0 shadow-2xl transition-all cursor-pointer group"
+                    aria-label="Launch video modal"
+                  >
+                    <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Video Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div
+                  onClick={() => setWatchModalOpen(true)}
+                  className="group relative rounded-xl overflow-hidden bg-white/5 border border-white/10 cursor-pointer hover:border-brand-blue/40 transition-all"
+                >
+                  <div className="aspect-[4/3] overflow-hidden relative">
+                    <img
+                      src={ceoInterview}
+                      alt="Digital Public Infrastructure"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-brand-blue text-brand-midnight flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                        <Play size={18} className="fill-current ml-0.5" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <span className="text-[9px] font-technical text-brand-blue uppercase tracking-widest font-bold block mb-1">
+                      EXECUTIVE BRIEFING
+                    </span>
+                    <h4 className="text-base font-serif font-bold text-white group-hover:text-brand-blue transition-colors">
+                      Digital Public Infrastructure: The Sovereign Rails
+                    </h4>
+                  </div>
+                </div>
+
+                <div
+                  onClick={() => setWatchModalOpen(true)}
+                  className="group relative rounded-xl overflow-hidden bg-white/5 border border-white/10 cursor-pointer hover:border-brand-blue/40 transition-all"
+                >
+                  <div className="aspect-[4/3] overflow-hidden relative">
+                    <img
+                      src={officeLounge}
+                      alt="Civil Registration Archives"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-brand-blue text-brand-midnight flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                        <Play size={18} className="fill-current ml-0.5" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <span className="text-[9px] font-technical text-brand-blue uppercase tracking-widest font-bold block mb-1">
+                      NATIONAL DEPLOYMENT
+                    </span>
+                    <h4 className="text-base font-serif font-bold text-white group-hover:text-brand-blue transition-colors">
+                      Civil Registration Archives & AI Indexing
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right 5 Columns: Featured Blue Card */}
+            <div className="lg:col-span-5">
+              <div className="bg-gradient-to-b from-[#1D4ED8] to-[#1E3A8A] border border-blue-400/30 rounded-2xl p-8 lg:p-10 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[500px] group hover:border-blue-300/50 transition-all">
+                <div>
+                  <span className="text-[10px] font-technical text-blue-200 uppercase tracking-widest font-bold block mb-4">
+                    INSIGHTS & RESEARCH
+                  </span>
+                  <h3 className="text-3xl lg:text-4xl font-serif font-bold text-white mb-6 leading-tight">
+                    Lessons from our alliances: What national DPI deployments can teach CEOs about rewiring for AI
+                  </h3>
+                  <p className="text-blue-100/80 text-sm leading-relaxed font-serif">
+                    How governments across Africa are combining sovereign data rails, open API specifications, and conversational AI to transform public service delivery.
+                  </p>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-blue-400/20 flex items-center justify-between">
+                  <span className="text-xs font-technical text-blue-200 uppercase tracking-wider font-bold">
+                    Read Report →
+                  </span>
+                  <Sparkles size={20} className="text-blue-200" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Floating AI Chatbot Badge (McKinsey Style) */}
+      <div className="fixed bottom-6 right-6 z-[100]">
+        <button
+          onClick={() => setSubModalOpen(true)}
+          className="bg-gradient-to-r from-blue-600 to-brand-blue text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-white/20 hover:scale-105 transition-transform cursor-pointer group"
+        >
+          <Sparkles size={18} className="text-cyan-200 group-hover:rotate-12 transition-transform" />
+          <div className="text-left leading-tight">
+            <span className="text-[9px] font-technical uppercase tracking-widest block text-cyan-100 font-bold">
+              Ask Azul Tech
+            </span>
+            <span className="text-xs font-serif font-bold">AI CHATBOT</span>
+          </div>
+        </button>
+      </div>
 
       {/* ── SCHEDULED WORKFLOW ROADMAP SECTION ("Good Scheduled Workflow") ── */}
       <section className="py-28 bg-[#061521] border-t border-white/10 relative overflow-hidden">

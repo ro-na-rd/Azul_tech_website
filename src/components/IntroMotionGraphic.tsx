@@ -2,7 +2,12 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Logo from "./Logo";
-import MotionGraphicPlayer, { MgScene, SceneShell, ease } from "./MotionGraphicPlayer";
+import MotionGraphicPlayer, {
+  MgScene,
+  SceneShell,
+  ease,
+  totalDuration,
+} from "./MotionGraphicPlayer";
 
 /**
  * IntroMotionGraphic
@@ -330,18 +335,66 @@ function OutroScene() {
 }
 
 const SCENES: MgScene[] = [
-  { id: "intro", label: "Sovereign infrastructure, built in Rwanda", duration: 4200, render: () => <IntroScene /> },
-  { id: "map", label: "Headquartered in Kigali", duration: 5600, render: () => <MapScene /> },
-  { id: "layers", label: "Five sovereign layers", duration: 5200, render: () => <LayersScene /> },
-  { id: "impact", label: "Local capacity, sovereign control", duration: 5800, render: () => <ImpactScene /> },
-  { id: "network", label: "Every institution on one secure rail", duration: 5200, render: () => <NetworkScene /> },
-  { id: "outro", label: "What's your next sovereign move?", duration: 5000, render: () => <OutroScene /> },
+  {
+    id: "intro",
+    label: "Sovereign infrastructure, built in Rwanda",
+    duration: 6500,
+    narration: "Azul Tech is a sovereign digital infrastructure firm, built in Rwanda, for Rwanda.",
+    render: () => <IntroScene />,
+  },
+  {
+    id: "map",
+    label: "Headquartered in Kigali",
+    duration: 6500,
+    narration:
+      "It's headquartered in Kigali, engineering the country's national digital public infrastructure.",
+    render: () => <MapScene />,
+  },
+  {
+    id: "layers",
+    label: "Five sovereign layers",
+    duration: 7000,
+    narration:
+      "The Azul stack has five sovereign layers: identity, data, payments, security, and A.I.",
+    render: () => <LayersScene />,
+  },
+  {
+    id: "impact",
+    label: "Local capacity, sovereign control",
+    duration: 7500,
+    narration:
+      "The work builds local capacity — digitising civil records, connecting ministries, and training Rwandan engineers.",
+    render: () => <ImpactScene />,
+  },
+  {
+    id: "network",
+    label: "Every institution on one secure rail",
+    duration: 5500,
+    narration: "Every institution ends up connected on one secure rail.",
+    render: () => <NetworkScene />,
+  },
+  {
+    id: "outro",
+    label: "What's your next sovereign move?",
+    duration: 5000,
+    narration: "What's your next sovereign move?",
+    render: () => <OutroScene />,
+  },
 ];
+
+export const RUNTIME_MS = totalDuration(SCENES);
 
 interface IntroMotionGraphicProps {
   autoPlay?: boolean;
 }
 
 export default function IntroMotionGraphic({ autoPlay = true }: IntroMotionGraphicProps) {
-  return <MotionGraphicPlayer scenes={SCENES} watermark="Azul Tech · Rwanda" autoPlay={autoPlay} />;
+  return (
+    <MotionGraphicPlayer
+      scenes={SCENES}
+      watermark="Azul Tech · Rwanda"
+      autoPlay={autoPlay}
+      pattern="rings"
+    />
+  );
 }

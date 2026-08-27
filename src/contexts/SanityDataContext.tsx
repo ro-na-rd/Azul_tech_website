@@ -112,10 +112,10 @@ const defaultEn = {
       title: "e-Government & Civil Services",
       category: "Implementation",
       description: "The core service layer built above DPIs that connects citizens directly to digital governance.",
-      duration: "10",
+      duration: "1.10",
       isFeatured: false,
       image: officeLounge,
-      link: "https://www.youtube.com/watch?v=aqz-KE-bpKQ"
+      motionGraphic: "egov"
     },
     {
       title: "Kigali, Rwanda → The World",
