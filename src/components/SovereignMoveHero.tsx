@@ -225,7 +225,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
       </section>
 
       {/* ── MCKINSEY FEATURE SHOWCASE SECTION (media_1787835629299.png) ────────── */}
-      <section ref={videoSectionRef} className="py-24 bg-[#040D14] border-t border-white/10 relative">
+      <section id="mckinsey-feature-section" ref={videoSectionRef} className="py-24 bg-[#040D14] border-t border-white/10 relative">
         <div className="container-editorial">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left 7 Columns: Title, Subtitle, Circular Arrow Button ( → ), Video Cards */}

@@ -332,11 +332,11 @@ export default function Hero() {
                   {/* McKinsey Circular Arrow Button ( → ) */}
                   <motion.button
                     onClick={() => {
-                      const el = document.getElementById('media-block-player') || document.getElementById('layers') || document.getElementById('work') || document.getElementById('bento-card-implementation');
+                      const el = document.getElementById('mckinsey-feature-section') || document.getElementById('media-block-player') || document.getElementById('layers');
                       if (el) {
-                        el.scrollIntoView({ behavior: 'smooth' });
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       } else {
-                        window.location.href = '/work';
+                        window.location.href = '/move';
                       }
                     }}
                     whileHover={{ scale: 1.1, backgroundColor: "#0ECFFE", color: "#040D14" }}
