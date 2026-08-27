@@ -7,7 +7,10 @@ import MediaBlock from '../components/MediaBlock';
 import { CheckCircle2, Globe2, ShieldCheck, Database, Cpu, Activity, Truck } from 'lucide-react';
 
 import officeLounge from '../assets/azul_office_lounge.png';
-import bookMockup from '../assets/azul_book_mockup_1776857228483.png';
+import minagriHubImg from '../assets/project_minagri_hub.png';
+import partnerMinaloc from '../assets/partner_minaloc.png';
+import partnerNida from '../assets/partner_nida.png';
+import partnerRisa from '../assets/partner_risa.png';
 import networkNodes from '../assets/azul_network_nodes_1776857276664.png';
 import serverInfra from '../assets/azul_server_infrastructure.png';
 
@@ -18,6 +21,11 @@ export default function WorkPage() {
       title: "Civil Registration Archives Digitization & AI Indexing",
       category: "Nation-Scale DPI & Civil Identity",
       image: officeLounge,
+      partnerLogos: [
+        { name: "Ministry of Local Government (MINALOC)", logo: partnerMinaloc },
+        { name: "National Identification Agency (NIDA)", logo: partnerNida },
+        { name: "Rwanda Information Society Authority (RISA)", logo: partnerRisa }
+      ],
       partners: ["Ministry of Local Government (MINALOC)", "National Identification Agency (NIDA)", "Rwanda Information Society Authority (RISA)"],
       description: "In partnership with MINALOC, NIDA, and RISA, we are digitizing 12.5 million civil records across all 416 administrative sectors in Rwanda into the Rwanda NCI CRVS platform — transforming fragile paper archives into a secure, searchable digital legacy.",
       whatWeDo: [
@@ -37,7 +45,7 @@ export default function WorkPage() {
       id: "minagri-hub",
       title: "MINAGRI Knowledge Hub & TUNGA AI",
       category: "Data Systems & AI",
-      image: bookMockup,
+      image: minagriHubImg,
       partners: ["Ministry of Agriculture (MINAGRI)", "Rwanda Agriculture Board (RAB)", "NAEB", "Centre for 4th Industrial Revolution (C4IR)"],
       description: "A central hub for organizing and accessing agriculture and animal resources data produced by MINAGRI and its institutions. The platform also serves as the content management system powering TUNGA AI — a Kinyarwanda conversational voicebot and chatbot.",
       whatWeDo: [
@@ -155,16 +163,27 @@ export default function WorkPage() {
                     <h3 className="text-2xl lg:text-3xl font-serif font-bold text-white mb-4 leading-tight">{proj.title}</h3>
                     <p className="text-white/70 text-sm leading-relaxed mb-6">{proj.description}</p>
 
-                    {/* Partners & Nations */}
+                    {/* Partners & Logos */}
                     <div className="mb-6 pb-6 border-b border-white/10">
-                      <span className="text-[10px] font-technical text-brand-blue uppercase tracking-widest block mb-2 font-bold">In Partnership With:</span>
-                      <div className="flex flex-wrap gap-2">
-                        {proj.partners.map(partner => (
-                          <span key={partner} className="text-xs bg-white/10 text-white/90 px-3 py-1 rounded border border-white/10 font-serif">
-                            {partner}
-                          </span>
-                        ))}
-                      </div>
+                      <span className="text-[10px] font-technical text-brand-blue uppercase tracking-widest block mb-3 font-bold">In Partnership With:</span>
+                      
+                      {proj.partnerLogos ? (
+                        <div className="flex flex-wrap items-center gap-4 mb-2">
+                          {proj.partnerLogos.map(pl => (
+                            <div key={pl.name} className="flex items-center gap-2 bg-white p-2 rounded-lg border border-white/20 shadow-md">
+                              <img src={pl.logo} alt={pl.name} className="h-10 w-auto object-contain" />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="flex flex-wrap gap-2">
+                          {proj.partners.map(partner => (
+                            <span key={partner} className="text-xs bg-white/10 text-white/90 px-3 py-1 rounded border border-white/10 font-serif">
+                              {partner}
+                            </span>
+                          ))}
+                        </div>
+                      )}
 
                       {proj.nations && (
                         <div className="mt-4">

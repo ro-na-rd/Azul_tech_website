@@ -6,7 +6,7 @@ import CustomCursor from '../components/CustomCursor';
 import Hero from '../components/Hero';
 import SocietalImpact from '../components/SocietalImpact';
 import HowWeHelp from '../components/HowWeHelp';
-import roboticHand from '../assets/azul_robotic_hand.jpg';
+import roboticHandAfrica from '../assets/azul_robotic_hand_africa.png';
 
 export default function AboutPage() {
   return (
@@ -55,22 +55,21 @@ export default function AboutPage() {
               </div>
             </motion.div>
 
-            {/* Right Column: 3D Futuristic Robotic Hand Image (Matching Slide 2) */}
+            {/* Right Column: 3D Futuristic Robotic Hand & Dotted Africa Map (Exact Slide 2 Asset) */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="lg:col-span-5 relative"
             >
-              <div className="relative rounded-2xl overflow-hidden border border-brand-blue/30 shadow-[0_0_50px_rgba(14,207,254,0.15)] group">
+              <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-white/10 to-transparent p-6 border border-brand-blue/30 shadow-[0_0_50px_rgba(14,207,254,0.15)] group">
                 <img
-                  src={roboticHand}
-                  alt="Azul Tech 3D Robotic Hand"
-                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                  src={roboticHandAfrica}
+                  alt="Azul Tech 3D Robotic Hand with Dotted Africa Map"
+                  className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#040D14]/80 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded text-[9px] font-technical text-brand-blue uppercase tracking-widest border border-white/10">
-                  Sovereign AI & System Integration
+                  Architecting Africa's Sovereign Stack
                 </div>
               </div>
             </motion.div>
