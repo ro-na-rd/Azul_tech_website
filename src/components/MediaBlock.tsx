@@ -4,6 +4,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSanityData } from "../contexts/SanityDataContext";
 import { PortableText } from "@portabletext/react";
 import { optimizedUrl } from "../services/sanity";
+import DpiMotionGraphic from "./DpiMotionGraphic";
+import GlobalSouthMotionGraphic from "./GlobalSouthMotionGraphic";
+
+// Some briefings are rendered as in-app, code-drawn motion graphics rather than
+// an external clip or a CMS-uploaded video. A briefing opts in explicitly with
+// `motionGraphic: "<key>"`, or is matched by title as a fallback.
+const MOTION_GRAPHICS: Record<string, React.FC<{ autoPlay?: boolean }>> = {
+  dpi: DpiMotionGraphic,
+  "global-south": GlobalSouthMotionGraphic,
+};
+
+const motionGraphicFor = (item: any): React.FC<{ autoPlay?: boolean }> | null => {
+  const key = item?.motionGraphic;
+  if (key && MOTION_GRAPHICS[key]) return MOTION_GRAPHICS[key];
+  const title = (item?.title || "").toLowerCase();
+  if (/digital public infrastructure/.test(title)) return DpiMotionGraphic;
+  if (/kigali.*(world|global)/.test(title)) return GlobalSouthMotionGraphic;
+  return null;
+};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -160,6 +179,7 @@ export default function MediaBlock() {
   if (discussions.length === 0) return null;
 
   const current = discussions[activeIndex];
+  const MotionGraphic = motionGraphicFor(current);
 
   const handleSelect = (index: number) => {
     setActiveIndex(index);
@@ -290,6 +310,10 @@ export default function MediaBlock() {
                     Click to Play Video
                   </span>
                 </div>
+              </div>
+            ) : MotionGraphic ? (
+              <div className="absolute inset-0">
+                <MotionGraphic autoPlay />
               </div>
             ) : current.videoFile?.asset?.url ? (
               <video

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, Search, Menu, X, ArrowRight, ShieldCheck, CheckCircle2, ChevronRight, Sparkles, Layers } from 'lucide-react';
 import Logo from './Logo';
 import SubscriptionModal from './SubscriptionModal';
+import IntroMotionGraphic from './IntroMotionGraphic';
 
 interface SovereignMoveHeroProps {
   onOpenDrawer?: () => void;
@@ -363,13 +364,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
                 <X size={20} />
               </button>
 
-              <iframe
-                src="https://www.youtube.com/embed/7zCsfe57tpU?autoplay=1"
-                className="w-full h-full"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                title="Azul Tech Sovereign Digital Infrastructure Overview"
-              />
+              {watchModalOpen && <IntroMotionGraphic autoPlay />}
             </motion.div>
           </div>
         )}

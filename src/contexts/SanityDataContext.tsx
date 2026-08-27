@@ -103,10 +103,10 @@ const defaultEn = {
       title: "Digital Public Infrastructure",
       category: "Policy Analysis",
       description: "The sovereign rails that governments put in place and orchestrate for digital transformation.",
-      duration: "0.30",
+      duration: "0.40",
       isFeatured: true,
       image: discussionImg,
-      link: "https://www.youtube.com/watch?v=7zCsfe57tpU"
+      motionGraphic: "dpi"
     },
     {
       title: "e-Government & Civil Services",
@@ -120,11 +120,11 @@ const defaultEn = {
     {
       title: "Kigali, Rwanda → The World",
       category: "Regional Protocol",
-      description: "Born in Africa, built for sovereign scale across the Global South.",
-      duration: "5",
+      description: "Born in Africa, built for the Global South. Our solutions are architected with the context of emerging markets at their core — not as an afterthought.",
+      duration: "0.35",
       isFeatured: false,
       image: teamKigali,
-      link: "https://www.youtube.com/watch?v=NirrRsBJJ2w"
+      motionGraphic: "global-south"
     }
   ],
   discussionsLabel: "WHO WE ARE",

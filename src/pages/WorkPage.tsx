@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CustomCursor from '../components/CustomCursor';
-import MediaBlock from '../components/MediaBlock';
 import { CheckCircle2, Globe2, ShieldCheck, Database, Cpu, Activity, Truck } from 'lucide-react';
 
 import officeLounge from '../assets/azul_office_lounge.png';
@@ -124,11 +123,8 @@ export default function WorkPage() {
           </motion.div>
         </div>
 
-        {/* Video & Discussions Block */}
-        <MediaBlock />
-
         {/* Detailed Projects Portfolio Grid */}
-        <section className="container-editorial pt-24 border-t border-white/10 mt-24">
+        <section className="container-editorial pt-8 border-t border-white/10 mt-12">
           <div className="mb-16">
             <span className="text-[10px] font-technical text-brand-blue uppercase tracking-[0.3em] font-bold block mb-2">CASE STUDIES</span>
             <h2 className="text-3xl lg:text-5xl font-serif font-bold text-white">Highlighted National Deployments</h2>
