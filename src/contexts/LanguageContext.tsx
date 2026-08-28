@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-type Language = "en" | "fr";
+type Language = "en" | "fr" | "rw" | "sw";
 
 interface LanguageContextType {
   language: Language;
@@ -17,7 +17,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // Initial load from localStorage if available
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("azul-language") as Language;
-      return saved === "fr" || saved === "en" ? saved : "en";
+      return saved === "fr" || saved === "en" || saved === "rw" || saved === "sw" ? saved : "en";
     }
     return "en";
   });
@@ -28,7 +28,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleLanguage = () => {
-    const newLang = language === "en" ? "fr" : "en";
+    const langs: Language[] = ["en", "fr", "rw", "sw"];
+    const idx = langs.indexOf(language);
+    const newLang = langs[(idx + 1) % langs.length];
     setLanguage(newLang);
   };
 

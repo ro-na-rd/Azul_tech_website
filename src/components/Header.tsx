@@ -11,6 +11,8 @@ import SubscriptionModal from "./SubscriptionModal";
 const languages = [
   { code: "en", label: "English", flag: "GB" },
   { code: "fr", label: "Français", flag: "FR" },
+  { code: "rw", label: "Kinyarwanda", flag: "RW" },
+  { code: "sw", label: "Kiswahili", flag: "KE" },
 ] as const;
 
 // ─── Nav item with roll-text hover ────────────────────────────────────────────
@@ -155,6 +157,26 @@ export default function Header() {
         { label: "Approche", href: "/approach" },
         { label: "Contact", href: "/contact" }
       ]
+    : language === 'rw'
+    ? [
+        { label: "Ahabanza", href: "/" },
+        { label: "Tweekize", href: "#about-dropdown" },
+        { label: "Ubukorikoringa", href: "/architecture" },
+        { label: "Akazi", href: "/work" },
+        { label: "Amakuru n'Ikiganiro", href: "/events-news" },
+        { label: "Uburyo", href: "/approach" },
+        { label: "Tuvugishe", href: "/contact" }
+      ]
+    : language === 'sw'
+    ? [
+        { label: "Nyumbani", href: "/" },
+        { label: "Kuhusu Sisi", href: "#about-dropdown" },
+        { label: "Miundombinu", href: "/architecture" },
+        { label: "Kazi", href: "/work" },
+        { label: "Matukio na Habari", href: "/events-news" },
+        { label: "Mbinu", href: "/approach" },
+        { label: "Wasiliana", href: "/contact" }
+      ]
     : [
         { label: "Home", href: "/" },
         { label: "About Us", href: "#about-dropdown" },
@@ -174,6 +196,22 @@ export default function Header() {
         { label: "Notre Histoire", href: "/history" },
         { label: "Nos Aspirations", href: "/aspiration" },
         { label: "Notre Gouvernance", href: "/governance" },
+      ]
+    : language === 'rw'
+    ? [
+        { label: "Ubuyobozi", href: "/leadership" },
+        { label: "Ishema, Intumbero n'Agaciro", href: "/mission-values" },
+        { label: "Amateka yacu", href: "/history" },
+        { label: "Ibisobanuro byacu", href: "/aspiration" },
+        { label: "Ubuyobozi bwacu", href: "/governance" },
+      ]
+    : language === 'sw'
+    ? [
+        { label: "Uongozi", href: "/leadership" },
+        { label: "Dhamira, Malengo na Maadili", href: "/mission-values" },
+        { label: "Historia Yetu", href: "/history" },
+        { label: "Malengo Yetu", href: "/aspiration" },
+        { label: "Uongozi Wetu", href: "/governance" },
       ]
     : [
         { label: "Firm Leadership", href: "/leadership" },

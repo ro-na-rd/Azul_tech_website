@@ -5,8 +5,152 @@ import Logo from './Logo';
 import SubscriptionModal from './SubscriptionModal';
 import IntroMotionGraphic, { RUNTIME_MS as INTRO_MS } from './IntroMotionGraphic';
 import { formatRuntime } from './MotionGraphicPlayer';
+import { useLanguage } from '../contexts/LanguageContext';
 import officeLounge from '../assets/azul_office_lounge.png';
 import ceoInterview from '../assets/azul_ceo_interview_1776857294654.png';
+
+const moveTranslations: Record<string, any> = {
+  en: {
+    firmLabel: "SOVEREIGN DIGITAL INFRASTRUCTURE FIRM",
+    heroLine1: "What's your next",
+    heroLine2: "sovereign move?",
+    watchVideo: "Watch Video",
+    footerLabel: "AZUL TECH • SYSTEM ARCHITECTURE & INTEGRATION",
+    mckinseyDesc: "Game-changing work. Sovereign systems and AI powering growth. At Azul Tech, we help you think bigger, build stronger, and expand opportunity for all.",
+    execBriefing: "EXECUTIVE BRIEFING",
+    execTitle: "Digital Public Infrastructure: The Sovereign Rails",
+    nationalDeploy: "NATIONAL DEPLOYMENT",
+    nationalTitle: "Civil Registration Archives & AI Indexing",
+    insightsLabel: "INSIGHTS & RESEARCH",
+    insightsTitle: "Lessons from our alliances: What national DPI deployments can teach CEOs about rewiring for AI",
+    insightsDesc: "How governments across Africa are combining sovereign data rails, open API specifications, and conversational AI to transform public service delivery.",
+    readReport: "Read Report →",
+    roadmapLabel: "ENGAGEMENT ROADMAP",
+    roadmapTitle: "Scheduled Infrastructure Workflow",
+    roadmapDesc: "Our structured, 4-phase deployment methodology guarantees secure, audit-ready digital public infrastructure delivered on clear institutional schedules.",
+    deliverables: "Scheduled Deliverables:",
+    searchPlaceholder: "Search Azul Tech architectures, projects, dispatches...",
+    searchNoResults: "No matching results found.",
+    phases: [
+      { phase: "PHASE 01", title: "Discovery & System Architecture", timeline: "Weeks 1 — 4", tag: "Strategic Assessment", description: "In-depth audit of existing national registries, legacy databases, data protection compliance, and inter-agency workflows.", deliverables: ["National DPI Audit & Gap Analysis", "Target Reference Architecture (5 Sovereign Layers)", "Data Sovereignty & Security Compliance Matrix"] },
+      { phase: "PHASE 02", title: "Protocol Lab Reference Blueprinting", timeline: "Weeks 5 — 10", tag: "Specification Design", description: "Engineering open, auditable, zero-trust protocols for identity, payments, entitlements, and cross-border interoperability.", deliverables: ["Sovereign Stack Reference Codebase", "API Contracts & Data Rail Interoperability Spec", "Sandbox Environment for Agency Testing"] },
+      { phase: "PHASE 03", title: "Core System Integration & Data Rails", timeline: "Weeks 11 — 20", tag: "Engineered Integration", description: "Deploying high-availability infrastructure across ministries, digitizing archives via AI, and establishing real-time data exchange.", deliverables: ["Civil Record Digitization & AI Indexing Engine", "Encrypted Cross-Ministry Data Exchange Rails", "Hardware-Backed Security & HSM Key Management"] },
+      { phase: "PHASE 04", title: "Nation-Scale Deployment & AI Governance", timeline: "Weeks 21 — 32", tag: "Institutional Handover", description: "Full production launch, training national engineers, enabling AI conversational voicebots, and operationalizing 24/7 oversight.", deliverables: ["Live Production Rollout across All Administrative Sectors", "Conversational AI Voicebot / Chatbot Integration (TUNGA AI)", "Continuous Audit & Executive Decision Dashboards"] },
+    ],
+    searchResults: [
+      { title: "Civil Registration Archives Digitization", category: "Project Portfolio", link: "/work" },
+      { title: "The Azul Stack — 5 Sovereign Layers", category: "Architecture", link: "/architecture" },
+      { title: "MINAGRI Knowledge Hub & TUNGA AI", category: "Data Systems & AI", link: "/work" },
+      { title: "6-Nation Road Safety Data Network", category: "Regional Protocol", link: "/work" },
+      { title: "Company Profile & Firm Leadership", category: "About Us", link: "/leadership" },
+    ],
+  },
+  fr: {
+    firmLabel: "ENTREPRISE D'INFRASTRUCTURE NUMÉRIQUE SOUVERAINE",
+    heroLine1: "Quel est votre prochain",
+    heroLine2: "mouvement souverain?",
+    watchVideo: "Regarder la vidéo",
+    footerLabel: "AZUL TECH • ARCHITECTURE SYSTÈME & INTÉGRATION",
+    mckinseyDesc: "Un travail révolutionnaire. Systèmes souverains et IA alimentant la croissance. Chez Azul Tech, nous vous aidons à penser plus grand, construire plus fort et élargir les opportunités pour tous.",
+    execBriefing: "BRIEFING EXÉCUTIF",
+    execTitle: "Infrastructure Publique Numérique: Les Rails Souverains",
+    nationalDeploy: "DÉPLOIEMENT NATIONAL",
+    nationalTitle: "Archives d'État Civil & Indexation IA",
+    insightsLabel: "ANALYSES & RECHERCHE",
+    insightsTitle: "Leçons de nos alliances: ce que les déploiements DPI nationaux peuvent enseigner aux PDG sur la refonte pour l'IA",
+    insightsDesc: "Comment les gouvernements à travers l'Afrique combinent rails de données souverains, spécifications API ouvertes et IA conversationnelle pour transformer la prestation de services publics.",
+    readReport: "Lire le rapport →",
+    roadmapLabel: "FEUILLE DE ROUTE D'ENGAGEMENT",
+    roadmapTitle: "Flux de Travail d'Infrastructure Planifié",
+    roadmapDesc: "Notre méthodologie de déploiement structurée en 4 phases garantit une infrastructure publique numérique sécurisée et prête pour l'audit, livrée selon des calendriers institutionnels clairs.",
+    deliverables: "Livrables planifiés:",
+    searchPlaceholder: "Rechercher architectures, projets, dispatches Azul Tech...",
+    searchNoResults: "Aucun résultat correspondant trouvé.",
+    phases: [
+      { phase: "PHASE 01", title: "Découverte & Architecture Système", timeline: "Semaines 1 — 4", tag: "Évaluation Stratégique", description: "Audit approfondi des registres nationaux existants, bases de données héritées, conformité à la protection des données et flux de travail inter-agences.", deliverables: ["Audit DPI National & Analyse des Lacunes", "Architecture de Référence Cible (5 Couches Souveraines)", "Matrice de Conformité Souveraineté des Données & Sécurité"] },
+      { phase: "PHASE 02", title: "Blueprinting de Référence Protocol Lab", timeline: "Semaines 5 — 10", tag: "Conception de Spécifications", description: "Ingénierie de protocoles ouverts, auditables, à confiance zéro pour l'identité, les paiements, les droits et l'interopérabilité transfrontalière.", deliverables: ["Code de Référence Sovereign Stack", "Spécifications de Contrats API & Interopérabilité Data Rail", "Environnement Sandbox pour Tests Agence"] },
+      { phase: "PHASE 03", title: "Intégration Système Central & Data Rails", timeline: "Semaines 11 — 20", tag: "Intégration Ingénierisée", description: "Déploiement d'infrastructure haute disponibilité across les ministères, numérisation des archives via IA, et établissement d'échange de données en temps réel.", deliverables: ["Numérisation d'État Civil & Moteur d'Indexation IA", "Rails d'Échange de Données Inter-Ministères Chiffrés", "Sécurité Matérialisée & Gestion de Clés HSM"] },
+      { phase: "PHASE 04", title: "Déploiement à l'Échelle Nationale & Gouvernance IA", timeline: "Semaines 21 — 32", tag: "Transfert Institutionnel", description: "Lancement en production complète, formation des ingénieurs nationaux, activation de voicebots conversationnels IA, et opérationnalisation de supervision 24/7.", deliverables: ["Déploiement en Production dans Tous les Secteurs Administratifs", "Intégration Voicebot / Chatbot IA Conversationnel (TUNGA AI)", "Tableaux de Bord d'Audit Continu & de Décision Exécutive"] },
+    ],
+    searchResults: [
+      { title: "Numérisation des Archives d'État Civil", category: "Portefeuille Projets", link: "/work" },
+      { title: "La Pile Azul — 5 Couches Souveraines", category: "Architecture", link: "/architecture" },
+      { title: "Centre de Connaissances MINAGRI & TUNGA AI", category: "Systèmes de Données & IA", link: "/work" },
+      { title: "Réseau de Données Sécurité Routière à 6 Nations", category: "Protocole Régional", link: "/work" },
+      { title: "Profil d'Entreprise & Direction", category: "À propos", link: "/leadership" },
+    ],
+  },
+  rw: {
+    firmLabel: "ISHURI RY'UBUKORIKORE BWA DIGITAL",
+    heroLine1: "Ni iki gikorwa",
+    heroLine2: "gikurikira?",
+    watchVideo: "Reba video",
+    footerLabel: "AZUL TECH • UBUKORIKORE BWA SISTEMU N'IBYIZA",
+    mckinseyDesc: "Akazi gakoroha. Sisteme z'ubuyobozi n'ubwenge bihuza ukwiyegera. Ku Azul Tech, dutegereza gukura, gukomeza, no kwagura amahirwe ku bose.",
+    execBriefing: "AMABWIRIZA Y'ABAYOBOZI",
+    execTitle: "Ubukorikore bw'Imibanire y'Abaturage: Inzira z'Ubuyobozi",
+    nationalDeploy: "GUSHYIRA MU BIKORWA",
+    nationalTitle: "Amateka y'Ibikorwa n'Iyandika rya AI",
+    insightsLabel: "ISESENGURA N'UBURYO",
+    insightsTitle: "Amateka y'ubufatanye: Ibyo ibikorwa bya DPI mu bihugu bigenewe abayobozi bishobora kubwigisha",
+    insightsDesc: "Uburyho abuyobozi bw'Afrika buhuza inzira z'amakuru z'ubuyobozi, amategeko y'IPI, n'ubwenge bw'ikoranabuhanga mu guhindura ubwitange bw'ibikorwa by'abaturage.",
+    readReport: "Soma raporo →",
+    roadmapLabel: "INZIRA Y'IBIKORWA",
+    roadmapTitle: "Ibikorwa by'Imbanire Bwigengewe",
+    roadmapDesc: "Uburyo bwacu bwa gatatu bw'ibikorwa bushyira mu bikorwa bushimangira imibanire y'ibintu irinda kandi igezwa mu bikorwa by'ingenzi mu bihe byerekejwe.",
+    deliverables: "Ibintu bisabwa:",
+    searchPlaceholder: "Rondera ubukorikore, ibikorwa, amakuru ya Azul Tech...",
+    searchNoResults: "Nta bintu bihambaye birabonetse.",
+    phases: [
+      { phase: "PHASE 01", title: "Kumenya n'Ubukorikore bwa Sistemu", timeline: "Ibiciro 1 — 4", tag: "Isesengura ry'Intumbero", description: "Isesengura ry'ibikorwa by'ibanze, amateka y'ibintu, n'uburango bw'ibintu by'abanyamuryango.", deliverables: ["Isesengura ry'DPI y'Igihugu", "Ubukorikore bw'Ibintu (Ibice 5)", "Uburyo bw'Ibanga n'Ubwenge"] },
+      { phase: "PHASE 02", title: "Kubaka Inzira y'Itegeko", timeline: "Ibiciro 5 — 10", tag: "Kubaka Amategeko", description: "Kubaka protocole zifunguye, zishobora kwiperera, zidafite icyizere kuri identite, ubwishyu, ubwisungane, n'ubufatanye.", deliverables: ["Inzira y'Ibintu", "Amategeko y'IPI n'Ubufatanye", "Ahantu h'ibigereranyo"] },
+      { phase: "PHASE 03", title: "Kwiza Sistemu n'Inzira z'Amakuru", timeline: "Ibiciro 11 — 20", tag: "Kwiza mu Bintu", description: "Gushyira imibanire y'ibintu mu mahutiro yose, gukora amateka mu bwenge, no gukora amakuru mu gihe nyawo.", deliverables: ["Kubika Amateka n'Igicaro cya AI", "Inzira z'Amakuru z'Uburyo", "Ubukorikore bw'Ibanga n'Amabanga"] },
+      { phase: "PHASE 04", title: "Gushyira mu Bikorwa no Kubuyoboza AI", timeline: "Ibiciro 21 — 32", tag: "Gutanga mu Bintu", description: "Gutangira ibikorwa byose, guhugura abakoresha, gukoresha AI, no gukora ubuyobozi bw'igihe cose.", deliverables: ["Gushyira mu Bikorwa mu Mishinga Yose", "Guhuza AI (TUNGA AI)", "Amategeko y'Igiciro n'Ibintu"] },
+    ],
+    searchResults: [
+      { title: "Kubika Amateka y'Ibikorwa", category: "Ibikorwa", link: "/work" },
+      { title: "Ibice by'Azul — Ibice 5", category: "Ubukorikore", link: "/architecture" },
+      { title: "Ikigo cya MINAGRI & TUNGA AI", category: "Amakuru n'AI", link: "/work" },
+      { title: "Urubuga rw'Amahugurwa y'Imodoka mu Bihugu 6", category: "Protocole y'Akarunga", link: "/work" },
+      { title: "Umwirondoro w'Ikigo n'Ubuyobozi", category: "Tweekize", link: "/leadership" },
+    ],
+  },
+  sw: {
+    firmLabel: "TAASISI YA MIUNDOMBINU YA KIDIJITALI YA KITAIFA",
+    heroLine1: "Ni nini hatua yako",
+    heroLine2: "ya kitaifa?",
+    watchVideo: "Tazama video",
+    footerLabel: "AZUL TECH • MIUNDOMBINU YA MFUMO NA UJUMUISHAJI",
+    mckinseyDesc: "Kazi inayobadilisha. Mifumo ya kitaifa na akili inayowezesha ukuaji. Katika Azul Tech, tunakusaidia kufikiri kwa ukubwa, kujenga kwa nguvu, na kupanua fursa kwa wote.",
+    execBriefing: "TAARIFA KWA VIONGOZI",
+    execTitle: "Miundombinu ya Umma ya Kidijitali: Njia za Kitaifa",
+    nationalDeploy: "UTEKELEZAJI WA KITAIFA",
+    nationalTitle: "Hifadhi za Usajili wa Raia & Uwekeshaji wa AI",
+    insightsLabel: "UCHAMBUZI NA UTAFITI",
+    insightsTitle: "Mafunzo kutoka ushirikiano wetu: kinachoweza kufundisha CEO kuhusu mabadiliko ya AI",
+    insightsDesc: "Jinsi viongozi wa Afrika wanavyochanganya njia za data za kitaifa, viwango vya API wazi, na AI ya mazungumzo kubadilisha utoaji wa huduma za umma.",
+    readReport: "Soma ripoti →",
+    roadmapLabel: "RAMANI YA UPATIKANAJI",
+    roadmapTitle: "Mtindo wa Kazi wa Miundombinu Ilipangwa",
+    roadmapDesc: "Mbinu yetu iliyopangwa ya hatua 4 ya utekelezaji inahakikisha miundombinu ya umma ya kidijitali salama na tayari kukaguliwa, inayotolewa kulingana na ratiba za taasisi wazi.",
+    deliverables: "Vitu vilivyopangwa:",
+    searchPlaceholder: "Tafuta miundombinu, miradi, taarifa za Azul Tech...",
+    searchNoResults: "Hakuna matokeo yanayolingana.",
+    phases: [
+      { phase: "PHASE 01", title: "Ugunduzi na Miundombinu ya Mfumo", timeline: "Wiki 1 — 4", tag: "Tathmini ya Kimkakati", description: "Uchambuzi wa kina wa orodha za kitaifa zilizo poa, hifadhidata za urithi, ubora wa ulinzi wa data, na mitindo ya kazi ya kati ya mashirika.", deliverables: ["Uchambuzi wa DPI ya Kitaifa na Uchambuzi wa Mapengo", "Miundombinu ya Malengo (Tabaka 5 za Kitaifa)", "Jedwali la Ulinganifu wa Ulinzi wa Data na Usalama"] },
+      { phase: "PHASE 02", title: "Uchoraji ramani wa Malengo ya Protocol Lab", timeline: "Wiki 5 — 10", tag: "Usanidi wa Viwango", description: "Uhandisi wa itifaa wazi, zinazoweza kukaguliwa, zenye sifuri ya kujiamini kwa utambulisho, malipo, haki, na uwezeshaji wa kikanda.", deliverables: ["Msingi wa Marejeo ya Sovereign Stack", "Mikataba ya API na Uwezeshaji wa Data Rail", "Mazingira ya Sandbox kwa Majaribio ya Wakala"] },
+      { phase: "PHASE 03", title: "Ujumishaji wa Mfumo Mkuu na Data Rails", timeline: "Wiki 11 — 20", tag: "Ujumishaji wa Uhandisi", description: "Kutenga miundombinu ya upatikanaji mkubwa katika wizara, kuhifadhi kwa AI, na kuanzisha ubadilishaji wa data wakati halisi.", deliverables: ["Ureheshaji wa Rekodi za Raia na injini ya Uwekeshaji wa AI", "Data Rails za Ubadilishaji wa Wizara Kati zilizosimbwa", "Ulinzi Unaotegemea Vifaa na Usimamizi wa Ufunguo wa HSM"] },
+      { phase: "PHASE 04", title: "Utekelezaji wa Kiwango cha Taifa na Uongozi wa AI", timeline: "Wiki 21 — 32", tag: "Ukabidhani wa Taasisi", description: "Kuzinduliwa kamili kwa uzalishaji, kufundisha waendeshaji wa kitaifa, kuwezesha voicebots za AI za mazungumzo, na kuendesha uangalizi wa masaa 24/7.", deliverables: ["Kutekelezwa kwa Uzalishaji Katika Sekta Zote za Utawala", "Ujumuishaji wa Voicebot / Chatbot ya AI (TUNGA AI)", "Dashibodi za Uchambuzi Endelevu na Maamuzi ya Uongozi"] },
+    ],
+    searchResults: [
+      { title: "Ureheshaji wa Hifadhi za Usajili wa Raia", category: "Projekti", link: "/work" },
+      { title: "Mfumo wa Azul — Tabaka 5 za Kitaifa", category: "Miundombinu", link: "/architecture" },
+      { title: "Kituo cha Maarifa cha MINAGRI & TUNGA AI", category: "Data na AI", link: "/work" },
+      { title: "Mtandao wa Data ya Usalama wa Barabara za Nchi 6", category: "Itifaa ya Kikanda", link: "/work" },
+      { title: "Wasifu wa Kampuni na Uongozi", category: "Kuhusu Sisi", link: "/leadership" },
+    ],
+  },
+};
 
 interface SovereignMoveHeroProps {
   onOpenDrawer?: () => void;
@@ -19,6 +163,8 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
   const [subModalOpen, setSubModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activePhase, setActivePhase] = useState(0);
+  const { language } = useLanguage();
+  const t = moveTranslations[language] || moveTranslations.en;
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
@@ -43,64 +189,9 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
     }
   };
 
-  const workflowPhases = [
-    {
-      phase: "PHASE 01",
-      title: "Discovery & System Architecture",
-      timeline: "Weeks 1 — 4",
-      tag: "Strategic Assessment",
-      description: "In-depth audit of existing national registries, legacy databases, data protection compliance, and inter-agency workflows.",
-      deliverables: [
-        "National DPI Audit & Gap Analysis",
-        "Target Reference Architecture (5 Sovereign Layers)",
-        "Data Sovereignty & Security Compliance Matrix"
-      ]
-    },
-    {
-      phase: "PHASE 02",
-      title: "Protocol Lab Reference Blueprinting",
-      timeline: "Weeks 5 — 10",
-      tag: "Specification Design",
-      description: "Engineering open, auditable, zero-trust protocols for identity, payments, entitlements, and cross-border interoperability.",
-      deliverables: [
-        "Sovereign Stack Reference Codebase",
-        "API Contracts & Data Rail Interoperability Spec",
-        "Sandbox Environment for Agency Testing"
-      ]
-    },
-    {
-      phase: "PHASE 03",
-      title: "Core System Integration & Data Rails",
-      timeline: "Weeks 11 — 20",
-      tag: "Engineered Integration",
-      description: "Deploying high-availability infrastructure across ministries, digitizing archives via AI, and establishing real-time data exchange.",
-      deliverables: [
-        "Civil Record Digitization & AI Indexing Engine",
-        "Encrypted Cross-Ministry Data Exchange Rails",
-        "Hardware-Backed Security & HSM Key Management"
-      ]
-    },
-    {
-      phase: "PHASE 04",
-      title: "Nation-Scale Deployment & AI Governance",
-      timeline: "Weeks 21 — 32",
-      tag: "Institutional Handover",
-      description: "Full production launch, training national engineers, enabling AI conversational voicebots, and operationalizing 24/7 oversight.",
-      deliverables: [
-        "Live Production Rollout across All Administrative Sectors",
-        "Conversational AI Voicebot / Chatbot Integration (TUNGA AI)",
-        "Continuous Audit & Executive Decision Dashboards"
-      ]
-    }
-  ];
+  const workflowPhases = t.phases;
 
-  const searchResults = [
-    { title: "Civil Registration Archives Digitization", category: "Project Portfolio", link: "/work" },
-    { title: "The Azul Stack — 5 Sovereign Layers", category: "Architecture", link: "/architecture" },
-    { title: "MINAGRI Knowledge Hub & TUNGA AI", category: "Data Systems & AI", link: "/work" },
-    { title: "6-Nation Road Safety Data Network", category: "Regional Protocol", link: "/work" },
-    { title: "Company Profile & Firm Leadership", category: "About Us", link: "/leadership" }
-  ].filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()));
+  const searchResults = t.searchResults.filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
     <div className="relative bg-[#040D14] text-white">
@@ -174,12 +265,12 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
             className="max-w-4xl"
           >
             <p className="text-[11px] font-technical text-brand-blue uppercase tracking-[0.4em] font-bold mb-6">
-              SOVEREIGN DIGITAL INFRASTRUCTURE FIRM
+              {t.firmLabel}
             </p>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-10 leading-[1.05] tracking-tight">
-              What's your next <br />
-              <span className="italic font-normal text-gradient-brand">sovereign move?</span>
+              {t.heroLine1} <br />
+              <span className="italic font-normal text-gradient-brand">{t.heroLine2}</span>
             </h1>
 
             {/* Watch Video & Circular Arrow Button Row */}
@@ -190,7 +281,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
                 whileTap={{ scale: 0.96 }}
                 className="bg-white text-brand-midnight font-technical text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-2xl flex items-center gap-3 transition-colors cursor-pointer"
               >
-                <span>Watch Video · {formatRuntime(INTRO_MS)}</span>
+                <span>{t.watchVideo} · {formatRuntime(INTRO_MS)}</span>
                 <Play size={14} className="fill-current text-brand-midnight" />
               </motion.button>
 
@@ -211,7 +302,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
         {/* Bottom Right Pause / Play Controls */}
         <div className="relative z-20 flex justify-between items-end px-8 lg:px-16 pb-8">
           <div className="text-[10px] font-technical text-white/50 uppercase tracking-widest hidden md:block">
-            AZUL TECH • SYSTEM ARCHITECTURE & INTEGRATION
+            AZUL TECH • {t.footerLabel}
           </div>
           
           <button
@@ -232,13 +323,13 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
             <div className="lg:col-span-7 space-y-10">
               <div>
                 <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
-                  What's your next <br />
-                  <span className="italic font-normal text-gradient-brand">sovereign move?</span>
+                  {t.heroLine1} <br />
+                  <span className="italic font-normal text-gradient-brand">{t.heroLine2}</span>
                 </h2>
 
                 <div className="flex items-center gap-6">
                   <p className="text-white/70 text-base md:text-lg max-w-xl font-serif leading-relaxed">
-                    Game-changing work. Sovereign systems and AI powering growth. At Azul Tech, we help you think bigger, build stronger, and expand opportunity for all.
+                    {t.mckinseyDesc}
                   </p>
 
                   {/* McKinsey Circular Arrow Button ( → ) */}
@@ -275,10 +366,10 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
                   </div>
                   <div className="p-4">
                     <span className="text-[9px] font-technical text-brand-blue uppercase tracking-widest font-bold block mb-1">
-                      EXECUTIVE BRIEFING
+                      {t.execBriefing}
                     </span>
                     <h4 className="text-base font-serif font-bold text-white group-hover:text-brand-blue transition-colors">
-                      Digital Public Infrastructure: The Sovereign Rails
+                      {t.execTitle}
                     </h4>
                   </div>
                 </div>
@@ -302,10 +393,10 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
                   </div>
                   <div className="p-4">
                     <span className="text-[9px] font-technical text-brand-blue uppercase tracking-widest font-bold block mb-1">
-                      NATIONAL DEPLOYMENT
+                      {t.nationalDeploy}
                     </span>
                     <h4 className="text-base font-serif font-bold text-white group-hover:text-brand-blue transition-colors">
-                      Civil Registration Archives & AI Indexing
+                      {t.nationalTitle}
                     </h4>
                   </div>
                 </div>
@@ -317,19 +408,19 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
               <div className="bg-gradient-to-b from-[#1D4ED8] to-[#1E3A8A] border border-blue-400/30 rounded-2xl p-8 lg:p-10 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[500px] group hover:border-blue-300/50 transition-all">
                 <div>
                   <span className="text-[10px] font-technical text-blue-200 uppercase tracking-widest font-bold block mb-4">
-                    INSIGHTS & RESEARCH
+                    {t.insightsLabel}
                   </span>
                   <h3 className="text-3xl lg:text-4xl font-serif font-bold text-white mb-6 leading-tight">
-                    Lessons from our alliances: What national DPI deployments can teach CEOs about rewiring for AI
+                    {t.insightsTitle}
                   </h3>
                   <p className="text-blue-100/80 text-sm leading-relaxed font-serif">
-                    How governments across Africa are combining sovereign data rails, open API specifications, and conversational AI to transform public service delivery.
+                    {t.insightsDesc}
                   </p>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-blue-400/20 flex items-center justify-between">
                   <span className="text-xs font-technical text-blue-200 uppercase tracking-wider font-bold">
-                    Read Report →
+                    {t.readReport}
                   </span>
                   <Sparkles size={20} className="text-blue-200" />
                 </div>
@@ -361,14 +452,14 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-20">
             <div className="max-w-2xl">
               <span className="text-[10px] font-technical text-brand-blue uppercase tracking-[0.3em] font-bold block mb-4">
-                ENGAGEMENT ROADMAP
+                {t.roadmapLabel}
               </span>
               <h2 className="text-3xl lg:text-5xl font-serif font-bold text-white leading-tight">
-                Scheduled Infrastructure Workflow
+                {t.roadmapTitle}
               </h2>
             </div>
             <p className="text-white/60 text-sm max-w-md leading-relaxed font-serif">
-              Our structured, 4-phase deployment methodology guarantees secure, audit-ready digital public infrastructure delivered on clear institutional schedules.
+              {t.roadmapDesc}
             </p>
           </div>
 
@@ -422,7 +513,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
 
               <div>
                 <h5 className="text-xs font-technical text-brand-blue uppercase tracking-widest font-bold mb-4">
-                  Scheduled Deliverables:
+                  {t.deliverables}
                 </h5>
                 <div className="space-y-3">
                   {workflowPhases[activePhase].deliverables.map((del, i) => (
@@ -461,7 +552,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
                 <input
                   type="text"
                   autoFocus
-                  placeholder="Search Azul Tech architectures, projects, dispatches..."
+                  placeholder={t.searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-transparent text-lg text-white placeholder:text-white/40 focus:outline-none font-serif"
@@ -487,7 +578,7 @@ export default function SovereignMoveHero({ onOpenDrawer }: SovereignMoveHeroPro
                     </a>
                   ))
                 ) : (
-                  <p className="text-white/40 text-sm py-8 text-center">No matching results found.</p>
+                  <p className="text-white/40 text-sm py-8 text-center">{t.searchNoResults}</p>
                 )}
               </div>
             </motion.div>
