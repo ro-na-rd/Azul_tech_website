@@ -500,7 +500,20 @@ export function SanityDataProvider({ children }: { children: React.ReactNode }) 
       const isLocalOnly = lang === 'rw' || lang === 'sw';
 
       setState({
-        hero: isLocalOnly ? fallback.hero : (hero || fallback.hero),
+        hero: (() => {
+          const base = isLocalOnly ? fallback.hero : (hero || fallback.hero);
+          return {
+            ...base,
+            bentoCards: (base.bentoCards || []).map((card: any, i: number) => ({
+              ...card,
+              image: fallback.hero.bentoCards[i]?.image || card.image,
+            })),
+            interviewCard: {
+              ...(base.interviewCard || {}),
+              image: fallback.hero.interviewCard?.image || base.interviewCard?.image,
+            },
+          };
+        })(),
         layers: isLocalOnly ? fallback.layers : ((home?.layers?.layers && home.layers.layers.length > 0)
           ? home.layers.layers.map((layer: any, i: number) => ({
               ...layer,
